@@ -1,0 +1,31 @@
+https://www.geeksforgeeks.org/problems/factorials-of-large-numbers2508/1?page=1&category=Strings&difficulty=Medium&sortBy=submissions
+
+// User function template for C++
+
+class Solution {
+  public:
+    vector<int> factorial(int n) {
+        // code here
+     vector<int>ans(1,1);
+     // multiply each until 1
+     while(n>1){
+         int res;
+         int carry=0;
+         int s=ans.size();
+         for(int i=0;i<s;i++){
+             //concept for multiply and carry
+             res=ans[i]*n+carry;
+             carry=res/10;
+             ans[i]=res%10;
+         }
+         //concept for carry
+         while(carry){
+             ans.push_back(carry%10);// increase ans size
+             carry/=10;
+         }
+         n--;
+     }
+     reverse(ans.begin(),ans.end());
+     return ans;
+     }
+};
