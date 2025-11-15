@@ -1,0 +1,41 @@
+https://www.geeksforgeeks.org/problems/check-if-string-is-rotated-by-two-places-1587115620/1
+
+class Solution {
+  public:
+  void c1(string& clockwise){
+      int n=clockwise.size();
+     char c= clockwise[n-1];
+     for(int i=n-1;i>0;i--){
+         clockwise[i]=clockwise[i-1];
+     }
+     clockwise[0]=c;
+  }
+  void c2(string& anticlockwise){
+       int n=anticlockwise.size();
+     char c= anticlockwise[0];
+     for(int i=0;i<n-1;i++){
+         anticlockwise[i]=anticlockwise[i+1];
+     }
+     anticlockwise[n-1]=c;
+      
+  }
+    bool isRotated(string& s1, string& s2) {
+        // code here
+        if(s1.size()!=s2.size())
+           return false;
+         
+         string clockwise = s1;
+         c1(clockwise);
+         c1(clockwise);
+         if(clockwise==s2)
+            return true;
+            
+        string anticlockwise=s1;
+        c2(anticlockwise);
+        c2(anticlockwise);
+        if(anticlockwise==s2)
+          return true;
+          
+         return false;
+    }
+};
