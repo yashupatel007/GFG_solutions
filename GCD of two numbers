@@ -1,0 +1,25 @@
+https://www.geeksforgeeks.org/problems/gcd-of-two-numbers3459/1
+class Solution {
+  public:
+    int gcd(int a, int b) {
+        // code here
+        int p,q,r;
+        if(a<=b){
+            p=a;
+            q=b;
+        }
+        else {
+            p=b;
+            q=a;
+        }
+        
+          
+        while(q>0){ // using algo 
+            r=q;    // store q remainder in r
+            q=p%q;  // find remainder of p&q
+            p=r;    // store last q in p
+            
+        }
+        return p;
+    }
+};
