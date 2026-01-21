@@ -1,0 +1,33 @@
+https://www.geeksforgeeks.org/problems/print-n-bit-binary-numbers-having-more-1s-than-0s0252/1
+// User function template for C++
+class Solution {
+  public:
+  
+    void binary(int n,vector<string>&ans,string& temp,int zero,int one)
+    {
+        if(n==temp.size()){
+            ans.push_back(temp);
+            return;
+        }
+        
+        //for handling 0
+        if(zero<one)
+        {
+            temp.push_back('0');
+            binary(n,ans,temp,zero+1,one);
+            temp.pop_back();
+        }
+        //for 1
+            temp.push_back('1');
+            binary(n,ans,temp,zero,one+1);
+            temp.pop_back();
+    }
+    vector<string> NBitBinary(int n) {
+        // Your code goes here
+        vector<string>ans;
+        string temp;
+        binary(n,ans,temp,0,0);
+        sort(ans.rbegin(),ans.rend());
+        return ans;
+    }
+};
