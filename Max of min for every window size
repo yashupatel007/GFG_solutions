@@ -1,0 +1,51 @@
+https://www.geeksforgeeks.org/problems/maximum-of-minimum-for-every-window-size3453/1?page=1&difficulty%5B%5D=2&category%5B%5D=Stack&sortBy=submissions
+
+class Solution {
+  public:
+    vector<int> maxOfMins(vector<int>& arr) {
+        //  code here
+        int n=arr.size();
+        vector<int>ans(n,0);
+        stack<int>st;
+        for(int i=0;i<n;i++)
+        {
+            while(!st.empty() && arr[st.top()]>arr[i])
+            {
+                int index=st.top();
+                st.pop();
+                if(!st.empty())
+                {
+                    int range=i-st.top()-1;
+                    ans[range-1]=max(ans[range-1],arr[index]);
+                }
+                else
+                {
+                    int range=i-(-1)-1;
+                    ans[range-1]=max(ans[range-1],arr[index]);
+                }
+            }
+            st.push(i);
+        }
+        while(!st.empty())
+        {
+                int index=st.top();
+                st.pop();
+                if(!st.empty())
+                {
+                    int range=n-st.top()-1;
+                    ans[range-1]=max(ans[range-1],arr[index]);
+                }
+                else
+                {
+                    int range=n-(-1)-1;
+                    ans[range-1]=max(ans[range-1],arr[index]);
+                }
+        }
+        for(int j=n-2;j>=0;j--)
+        {
+            if(ans[j]<ans[j+1])
+                ans[j]=max(ans[j],ans[j+1]);
+        }
+        return ans;
+    }
+};
