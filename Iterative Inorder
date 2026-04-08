@@ -1,0 +1,53 @@
+https://www.geeksforgeeks.org/problems/inorder-traversal-iterative/1?page=3&difficulty%5B%5D=1&category%5B%5D=Tree&sortBy=submissions
+
+// User function Template for C++
+
+/* Tree Node
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+};*/
+class Solution {
+  public:
+    vector<int> inOrder(Node* root) {//L N R
+    //for stack- R N L
+        // code here
+        stack<Node*>st;
+        stack<bool>visited;
+        vector<int>ans;
+        if(!root) return ans;
+        st.push(root);
+        visited.push(0);
+        
+        while(!st.empty())
+        {
+            Node* temp=st.top();
+            st.pop();
+            bool flag=visited.top();
+            visited.pop();
+            
+            if(!flag)// for 0
+            {
+                if(temp->right){ 
+                st.push(temp->right);
+                visited.push(0);
+                }
+                
+                st.push(temp);
+                visited.push(1);
+                
+                if(temp->left){ 
+                st.push(temp->left);
+                visited.push(0);
+                }
+            }
+            else //for 1
+            {
+                ans.push_back(temp->data);
+            }
+        }
+        return ans;
+        
+    }
+};
