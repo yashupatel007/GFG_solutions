@@ -1,0 +1,92 @@
+https://www.geeksforgeeks.org/problems/print-a-binary-tree-in-vertical-order/1
+
+/*
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    void find(Node* root,int pos,int& l ,int& r)
+    {
+        if(!root)
+            return;
+        l=min(l,pos);//store the -ve
+        r=max(r,pos);//store the +ve
+        find(root->left,pos-1,l,r);//find the min height distance for -ve
+        find(root->right,pos+1,l,r);//find the max height distance for +ve
+    }
+    vector<vector<int>> verticalOrder(Node *root) {
+        // code here
+        int l=0;
+        int r=0;
+        find(root,0,l,r);//we get the value of l & r for the size of 2d vector
+        vector<vector<int>>positive(r+1);
+        vector<vector<int>>negative(abs(l)+1);
+        queue<Node*>q;
+        queue<int>index;
+        
+        q.push(root);
+        index.push(0);
+        
+        while(!q.empty())
+        {
+            Node* temp=q.front();
+            q.pop();
+            
+            int pos=index.front();
+            index.pop();
+            
+            //store temp val at pos in 2d vector
+            if(pos>=0)//+ve
+                positive[pos].push_back(temp->data);
+            else
+                negative[abs(pos)].push_back(temp->data);
+            //push the childrens in q
+            
+            if(temp->left)//for -ve
+            {
+                q.push(temp->left);
+                index.push(pos-1);
+            }
+            
+            if(temp->right)//for +ve
+            {
+                q.push(temp->right);
+                index.push(pos+1);
+            }
+        }
+        //now store all 2d value 
+        
+        vector<vector<int>>ans;
+        ans.insert(ans.end(),negative.rbegin(),negative.rend()-1);
+        ans.insert(ans.end(),positive.begin(),positive.end());
+        // for(int i=negative.size()-1;i>0;i--)
+        // {
+        //     for(int j=0;j<negative[i].size();j++)
+        //     {
+        //         ans.push_back(negative[i][j]);
+        //     }
+        // }
+        // //store +ve
+        //  for(int i=0;i<positive.size();i++)
+        // {
+        //     for(int j=0;j<positive[i].size();j++)
+        //     {
+        //         ans.push_back(positive[i][j]);
+        //     }
+        // }
+        return ans;
+        
+    }
+};
