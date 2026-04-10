@@ -1,0 +1,67 @@
+https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1?page=1&difficulty%5B%5D=1&category%5B%5D=Tree&sortBy=submissions
+
+/*
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor to initialize a new node
+    Node(int val) {
+        data = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    void leftsubtree(Node* root,vector<int>& ans)
+    {
+        if(!root || (!root->left && !root->right))
+            return;
+        ans.push_back(root->data);
+        if(root->left)
+            leftsubtree(root->left,ans);
+        else
+            leftsubtree(root->right,ans);
+    }
+    void leaf(Node* root,vector<int>& ans)
+    {
+        if(!root)
+            return;
+        if(!root->left && !root->right)
+        {
+            ans.push_back(root->data);
+            return;
+        }
+        leaf(root->left,ans);
+        leaf(root->right,ans);
+    }
+    void rightsubtree(Node* root,vector<int>& ans)
+    {
+        if(!root || (!root->left && !root->right) )
+            return;
+        if(root->right)
+            rightsubtree(root->right,ans);
+        else
+            rightsubtree(root->left,ans);
+        ans.push_back(root->data);
+    }
+    vector<int> boundaryTraversal(Node *root) {
+        // code here
+        vector<int>ans;
+        //root element
+        ans.push_back(root->data);
+        //left subtree except root
+        leftsubtree(root->left,ans);
+        //leaf nodes except extreame left & right node(part of leaft & right subtree)
+        if(root->left || root->right)
+        leaf(root,ans);
+        //right node in reverse
+        rightsubtree(root->right,ans);
+        return ans;
+    }
+};
