@@ -1,0 +1,27 @@
+https://www.geeksforgeeks.org/problems/check-for-bst/1?page=1&difficulty
+
+class Solution {
+  public:
+    bool check(Node* root,int& prev)
+    {
+         if(!root)
+            return true;
+      
+        
+        bool l=check(root->left,prev);
+        if(l==false) return false;
+        
+        if(root->data<=prev)    return false;
+        
+        prev=root->data;
+        
+        return check(root->right,prev);
+        
+        
+    }
+    bool isBST(Node* root) {
+        // code here
+        int prev=INT_MIN;
+       return check(root,prev);
+    }
+};
