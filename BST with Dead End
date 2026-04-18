@@ -1,0 +1,23 @@
+https://www.geeksforgeeks.org/problems/check-whether-bst-contains-dead-end/1
+
+
+class Solution {
+  public:
+    bool end(Node* root,int min,int max)
+    {
+        if(!root)
+            return false;
+        if(!root->left && !root->right)
+        {
+            if(root->data-min==1 && max-root->data==1)
+                return true;
+            else
+                return false;
+        }
+        return end(root->left,min,root->data) || end(root->right,root->data,max);
+    }
+    bool isDeadEnd(Node *root) {
+        // Code here
+        return end(root,0,INT_MAX);
+    }
+};
