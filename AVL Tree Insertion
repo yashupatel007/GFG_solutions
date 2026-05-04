@@ -1,0 +1,103 @@
+https://www.geeksforgeeks.org/problems/avl-tree-insertion/1
+
+/* The structure of the Node is
+struct Node
+{
+    int data;
+    Node *left;
+    Node *right;
+    int height;
+};
+*/
+
+class Solution {
+  public:
+  int getHeight(Node* root)
+{
+  if(!root)
+    return 0;
+  return root->height;
+}
+
+int getBalance(Node* root)
+{
+  return getHeight(root->left)-getHeight(root->right);
+}
+
+Node* leftRotation(Node* root)
+{
+  Node* child=root->right;
+  Node* childLeft=child->left;
+
+  child->left=root;
+  root->right=childLeft;
+  //update height for child & root
+  root->height=1+max(getHeight(root->left),getHeight(root->right));
+  child->height=1+max(getHeight(child->left),getHeight(child->right));
+  return child;
+}
+
+Node* rightRotation(Node* root)
+{
+  Node* child=root->left;
+  Node*childRight=child->right;
+  
+  child->right=root;
+  root->left=childRight;
+  //update height of root & child
+  root->height=1+max(getHeight(root->left),getHeight(root->right));
+  child->height=1+max(getHeight(child->left),getHeight(child->right));
+  return child;
+}
+    /*You are required to complete this method */
+    Node* insertToAVL(Node* root, int key) {
+        // Your code here
+        //root doesn't exist
+  if(!root)
+    return new Node(key);
+  //root exist
+  if(key<root->data)//left side
+    root->left=insertToAVL(root->left,key);
+  else if(key>root->data)// right side
+    root->right=insertToAVL(root->right,key);
+  else //equal (iqnore)
+    return root;
+// update height
+  root->height=1+max(getHeight(root->left),getHeight(root->right));
+
+  //check balancing
+  int balance = getBalance(root); 
+
+  //left left(right rotation[top])
+  if(balance>1 && key<root->left->data)
+  {
+    return rightRotation(root);
+  }
+
+  //right right(left rotation[top])
+  else if(balance<-1 && key>root->right->data)
+  {
+    return leftRotation(root);
+  }
+
+  //left right(left rotation[mid] && right rotation[top])
+  else if(balance>1 && key>root->left->data)
+  {
+    root->left=leftRotation(root->left);
+    return rightRotation(root);
+  }
+
+  //right left(right rotation[mid] && left rotation[top])
+  else if(balance<-1 && key<root->right->data)
+  {
+    root->right=rightRotation(root->right);
+    return leftRotation(root);
+  }
+
+  //no unbalance
+  else
+  {
+    return root;
+  }
+    }
+};
