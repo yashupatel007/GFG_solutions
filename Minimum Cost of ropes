@@ -1,0 +1,33 @@
+https://www.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1?page=1&difficulty
+
+
+class Solution {
+  public:
+    int minCost(vector<int>& arr) {
+        // code here
+        int n=arr.size();
+        priority_queue<int,vector<int>,greater<int>>p;
+        
+        // store all elements in priority queue
+        for(int x:arr)
+            p.push(x);
+        
+        // get 2 elements from PQ and push the result
+        int ans=0;
+        while(n>1)
+        {
+            int f1=p.top();
+            p.pop();
+            int f2=p.top();
+            p.pop();
+            
+            int res=f1+f2;
+            ans+=res;
+            p.push(res);
+            n--;
+            
+        }
+       
+        return ans;
+    }
+};
