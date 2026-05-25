@@ -1,0 +1,70 @@
+https://www.geeksforgeeks.org/problems/is-binary-tree-heap/1
+
+/*
+class Node {
+   public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+  int CountNode(Node* root)
+  {
+      if(!root)
+        return 0;
+        
+    return 1+CountNode(root->left)+CountNode(root->right);
+  }
+  
+  bool CBT(Node* root,int index,int totalNodes)
+  {
+      if(!root)
+        return 1;
+        
+      if(index>=totalNodes)
+        return 0;
+    
+    // check left && right
+    return CBT(root->left,(2*index)+1,totalNodes) && CBT(root->right,(2*index)+2,totalNodes);
+  }
+  
+  bool checkParent(Node* root)
+  {
+      if(root->left)
+        {
+            if(root->data<root->left->data)
+                return 0;
+            if(!checkParent(root->left))
+                return 0;
+        }
+        
+        if(root->right)
+        {
+            if(root->data<root->right->data)
+                return 0;
+            return checkParent(root->right);
+        }
+        return 1;
+  }
+    bool isHeap(Node* tree) {
+        // code here
+        
+        // count the nodes
+        int count=CountNode(tree);
+        
+        // check CBT
+        if(!CBT(tree,0,count))
+            return 0;
+        // check parent>=child
+        return checkParent(tree);
+        
+    }
+};
