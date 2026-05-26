@@ -1,0 +1,50 @@
+https://www.geeksforgeeks.org/problems/bst-to-max-heap/1
+
+
+// User function Template for C++
+
+/*struct Node {
+    int data;
+    Node *left, *right;
+};*/
+
+class Solution {
+  public:
+  void inorder(Node* root,vector<int>& nodeArr)
+  {
+      if(!root)
+        return;
+    
+        // move left
+        inorder(root->left,nodeArr);
+        // Node
+        nodeArr.push_back(root->data);
+        //move right
+         inorder(root->right,nodeArr);
+  }
+  
+  void postorder(Node* root,vector<int>& nodeArr,int& index)
+  {
+      // L R N
+      if(!root)
+        return;
+        
+    postorder(root->left,nodeArr,index);
+ 
+    
+    postorder(root->right,nodeArr,index);
+   
+    
+    root->data=nodeArr[index];
+    index++;
+      
+      
+  }
+    void convertToMaxHeapUtil(Node* root) {
+        // Your code goes here
+        vector<int>nodeArr;
+        int index=0;
+        inorder(root,nodeArr);
+        postorder(root,nodeArr,index);
+    }
+};
