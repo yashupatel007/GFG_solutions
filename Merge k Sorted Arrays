@@ -1,0 +1,32 @@
+https://www.geeksforgeeks.org/problems/merge-k-sorted-arrays/1
+
+class Solution {
+  public:
+    vector<int> mergeArrays(vector<vector<int>> &mat) {
+        // Code here
+    int row=mat.size();
+  int col=mat[0].size();
+  typedef pair<int,pair<int,int>> element;
+  vector<element> temp;
+  
+  for(int i=0;i<row;i++)
+  {
+    temp.push_back({mat[i][0],{i,0}});
+  }
+  priority_queue<element,vector<element>,greater<element>>p(temp.begin(),temp.end());// min heap
+
+    element smallest=p.top();
+    vector<int>ans;
+  while(!p.empty())
+  {
+    smallest=p.top();
+    p.pop();
+    ans.push_back(smallest.first);
+    int r=smallest.second.first;
+    int c=smallest.second.second;
+    if(c+1<col)
+        p.push({mat[r][c+1],{r,c+1}});
+  }
+  return ans;
+    }
+};
