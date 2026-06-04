@@ -1,0 +1,48 @@
+https://www.geeksforgeeks.org/problems/topological-sort/1
+
+class Solution {
+  public:
+    
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        // code here
+        vector<vector<int>>adj(V);
+        vector<int>ans;
+        for(int i=0;i<edges.size();i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            adj[u].push_back(v);
+        }
+        vector<int>indeg(V,0);
+        queue<int>q;
+        
+        for(int i=0;i<V;i++)
+        {
+           for(int j=0;j<adj[i].size();j++)
+           {
+               indeg[adj[i][j]]++;
+           }
+        }
+        
+        for(int i=0;i<V;i++)
+        {
+            if(!indeg[i])
+                q.push(i);
+        }
+        
+        while(!q.empty())
+        {
+            int element=q.front();
+            q.pop();
+            ans.push_back(element);
+            for(int j=0;j<adj[element].size();j++)
+            {
+                indeg[adj[element][j]]--;
+                if(!indeg[adj[element][j]])
+                    q.push(adj[element][j]);
+            }
+        }
+        
+        return ans;
+    }
+};
