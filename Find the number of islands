@@ -1,0 +1,58 @@
+https://www.geeksforgeeks.org/problems/find-the-number-of-islands/1
+
+class Solution {
+  public:
+    int row;
+    int col;
+    
+    int r[8]={-1,-1,-1,1,1,1,0,0};
+    int c[8]={-1,0,1,-1,0,1,-1,1};
+    
+    bool valid(int i,int j)
+    {
+        return i>=0 && i<row && j>=0 && j<col;
+    }
+    int countIslands(vector<vector<char>>& grid) {
+        // Code here
+        
+        // L-1 & W-0
+        row=grid.size();
+        col=grid[0].size();
+        
+        queue<pair<int,int>>q;
+        int count=0;
+        
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                if(grid[i][j]=='L')
+                {
+                    count++;
+                    q.push({i,j});
+                    grid[i][j]='W';
+                    
+                    while(!q.empty())
+                    {
+                        int new_i=q.front().first;
+                        int new_j=q.front().second;
+                        q.pop();
+                        
+                        for(int k=0;k<8;k++)
+                        {
+                            if(valid(new_i+r[k],new_j+c[k]))
+                            {
+                                if(grid[new_i+r[k]][new_j+c[k]]=='L')
+                                {
+                                    grid[new_i+r[k]][new_j+c[k]]='W';
+                                    q.push({new_i+r[k],new_j+c[k]});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
