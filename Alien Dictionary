@@ -1,0 +1,71 @@
+class Solution {
+  public:
+    string findOrder(vector<string> &words) {
+        // code here
+        int N=words.size();
+        vector<vector<int>>adj(26);
+        vector<int>indeg(26,0);
+        vector<bool>present(26,0);
+        string ans="";
+        int uniqChar=0;
+        
+        for(string& w:words)
+        {
+            for(char c:w)
+            {
+                if(!present[c-'a'])
+                {
+                present[c-'a']=1;
+                uniqChar++;
+                }
+            }
+        }
+        
+        
+        for(int i=0;i<N-1;i++)
+        {
+            string str1=words[i];
+            string str2=words[i+1];
+            int j=0,k=0;
+            
+            while(j<str1.size() && k<str2.size() && str1[j]==str2[k])
+            {    j++;
+                k++;
+            }
+            
+            if(j<str1.size() && k==str2.size())
+                return "";
+                
+            if(j==str1.size() || k==str2.size())
+                continue;
+            adj[str1[j]-'a'].push_back(str2[k]-'a');
+            indeg[str2[k]-'a']++;
+        }
+        
+       queue<int>q;
+        
+        for(int i=0;i<26;i++)
+        {
+            if(present[i] && !indeg[i])
+                q.push(i);
+        }
+        
+        while(!q.empty())
+        {
+            int node=q.front();
+            q.pop();
+            
+            ans+=('a'+node);
+            for(int j=0;j<adj[node].size();j++)
+            {
+                indeg[adj[node][j]]--;
+                if(!indeg[adj[node][j]])
+                {
+                    q.push(adj[node][j]);
+                }
+            }
+        }
+        
+        return ans.size()!=uniqChar ? "": ans;
+    }
+};
