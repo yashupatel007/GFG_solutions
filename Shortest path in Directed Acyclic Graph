@@ -1,0 +1,57 @@
+// User function Template for C++
+class Solution {
+  public:
+    void DFS(int node,vector<vector<pair<int,int>>>& adj, stack<int>& st,vector<int>& visited)
+    {
+        visited[node]=1;
+        
+        for(int j=0;j<adj[node].size();j++)
+        {
+            if(!visited[adj[node][j].first])
+                DFS(adj[node][j].first,adj,st,visited);
+        }
+        st.push(node);
+    }
+    vector<int> shortestPath(int V, int E, vector<vector<int>>& edges) {
+        // code here
+        
+        vector<vector<pair<int,int>>>adj(V);
+        // make adj matrix
+        for(int i=0;i<E;i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int w=edges[i][2];
+            
+            adj[u].push_back({v,w});
+        }
+        // topological sort
+        stack<int>st;
+        vector<int>visited(V,0);
+        DFS(0,adj,st,visited);
+        
+        vector<int>dist(V,INT_MAX);
+        dist[0]=0;
+        //loop until stack empty
+        while(!st.empty())
+        {
+            int node=st.top();
+            st.pop();
+            
+            for(int j=0;j<adj[node].size();j++)
+            {
+                int neigh=adj[node][j].first;
+                int weight=adj[node][j].second;
+                dist[neigh]=min(dist[neigh],weight+dist[node]);
+            }
+        }
+        
+        //make unreachable -1
+        for(int i=0;i<V;i++)
+        {
+            if(dist[i]==INT_MAX)
+                dist[i]=-1;
+        }
+        return dist;
+    }
+};
