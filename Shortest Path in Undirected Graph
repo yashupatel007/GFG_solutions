@@ -1,0 +1,40 @@
+class Solution {
+  public:
+    vector<int> shortestPath(int V, vector<vector<int>> &edges, int src) {
+        // code here
+        // make adj matrix
+        vector<vector<int>>adj(V);
+        
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+        
+        queue<int>q;
+        vector<int>dist(V,-1);
+        vector<bool>visited(V,0);
+        
+        //push src and make visited and dist.
+        q.push(src);
+        dist[src]=0;
+        visited[src]=1;
+        
+        while(!q.empty())
+        {
+            int node=q.front();
+            q.pop();
+            
+            for(int j=0;j<adj[node].size();j++)
+            {
+                if(!visited[adj[node][j]])
+                {
+                    visited[adj[node][j]]=1;
+                    dist[adj[node][j]]=dist[node]+1;
+                    q.push(adj[node][j]);
+                }
+            }
+        }
+        return dist;
+    }
+};
