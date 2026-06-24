@@ -1,0 +1,70 @@
+class Solution {
+  public:
+    void DFS(int node,vector<vector<int>>& adj,vector<vector<int>>& ans,
+    vector<bool>& visited,vector<int>& disc,vector<int>& low,stack<int>& st,
+    vector<bool>& in_stack,int& count)
+    {
+        disc[node]=low[node]=++count;
+        visited[node]=1;
+        st.push(node);
+        in_stack[node]=1;
+        
+        for(int j=0;j<adj[node].size();j++)
+        {
+            int neigh=adj[node][j];
+            if(!visited[neigh])
+            {
+                DFS(neigh,adj,ans,visited,disc,low,st,in_stack,count);
+                low[node]=min(low[node],low[neigh]);
+            }
+            else if(in_stack[neigh])
+            {
+                low[node]=min(low[node],disc[neigh]);
+            }
+        }
+        if(disc[node]==low[node])
+        {
+            vector<int>temp;
+            
+            while(!st.empty() && st.top()!=node)
+            {
+                int n=st.top();
+                st.pop();
+                
+                temp.push_back(n);
+                in_stack[n]=0;
+                
+            }
+            temp.push_back(node);
+            in_stack[node]=0;
+            st.pop();
+            
+            
+            sort(temp.begin(),temp.end());
+            ans.push_back(temp);
+        }
+    }
+    vector<vector<int>> tarjans(int V, vector<vector<int>>& adj) {
+        // code here
+        
+        vector<bool>visited(V,0);
+        vector<int>disc(V);
+        vector<int>low(V);
+        stack<int>st;
+        vector<bool>in_stack(V,0);
+        vector<vector<int>>ans;
+        int count=0;
+        
+        
+        for(int i=0;i<V;i++)
+        {
+            if(!visited[i])
+            {
+                DFS(i,adj,ans,visited,disc,low,st,in_stack,count);
+            }
+        }
+        sort(ans.begin(),ans.end());
+        return ans;
+        
+    }
+};
