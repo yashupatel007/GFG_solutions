@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    vector<int> minMaxCandy(vector<int>& prices, int k) {
+        // Code here
+         vector<int>ans;
+        int n=prices.size();
+        sort(prices.begin(),prices.end());
+        // for min cost
+        int left=0;
+        int right=n-1;
+        int cost=0;
+        
+        while(left<n && right>=0 && left<=right)
+        {
+            cost+=prices[left];
+            left++;
+            right-=k;
+        }
+        
+        ans.push_back(cost);
+        cost=0;
+        // for max cost
+        
+        left=0;
+        right=n-1;
+        
+        while(left<n && right>=0 && left<=right)
+        {
+            cost+=prices[right];
+            left+=k;
+            right--;
+        }
+        ans.push_back(cost);
+        return ans;
+    }
+};
