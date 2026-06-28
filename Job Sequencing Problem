@@ -1,0 +1,48 @@
+class Solution {
+  public:
+    int find(int num,vector<int>& parent)
+    {
+        if(num==parent[num])
+            return num;
+            
+        return parent[num]=find(parent[num],parent);
+    }
+    vector<int> jobSequencing(vector<int> &deadline, vector<int> &profit) {
+        // code here
+        int n=profit.size();
+        int m=deadline.size();
+        vector<pair<int,int>>comb;//profit,deadline
+        
+        for(int i=0;i<n;i++)
+        {
+            comb.push_back({profit[i],deadline[i]});
+        }
+        
+        sort(comb.rbegin(),comb.rend());
+        
+       vector<int>parent(m+1);
+       
+       for(int i=0;i<=m;i++)
+        parent[i]=i;
+        
+        int job=0;
+        int prof=0;
+        
+        for(int i=0;i<n;i++)
+        {
+            int slot=find(comb[i].second,parent);
+            
+            if(slot>0)
+            {
+                job++;
+                prof+=comb[i].first;
+                parent[slot]=slot-1;
+            }
+            
+        }
+        vector<int>ans;
+       ans.push_back(job);
+       ans.push_back(prof);
+        return ans;
+    }
+};
