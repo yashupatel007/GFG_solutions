@@ -1,0 +1,97 @@
+class Solution {
+  public:
+    
+    class Node
+    {
+      public:
+      
+      int freq;
+      char c;
+      int id;
+      Node* left;
+      Node* right;
+      
+      Node(int frequency,char name,int idx)
+      {
+          freq=frequency;
+          c=name;
+          id=idx;
+          left=right=NULL;
+      }
+      
+    };
+    
+    class comp
+    {
+      public:
+      
+      bool operator()(Node* a,Node* b)
+      {
+          if(a->freq == b->freq)
+          {
+              return a->id > b->id;
+          }
+          return a->freq > b->freq; // min find (reverse sign in Node)
+      }
+    };
+    
+    void find(Node* root, string& temp,vector<string>& ans)
+    {
+        if(!root)
+            return;
+            
+        if(!root->left && !root->right)
+        {
+            ans.push_back(temp);
+            return;
+        }
+        
+        temp.push_back('0');
+        find(root->left,temp,ans); // move left
+        temp.pop_back();
+        
+        temp.push_back('1');
+        find(root->right,temp,ans); // move right
+        temp.pop_back();
+    }
+    
+    vector<string> huffmanCodes(string &s, vector<int> f) {
+        // Code here
+        int n=f.size();
+        if(n==0)    return {};
+        if(n==1)    return {"0"};
+        //build Huffman Tree
+        // make min heap (freq basis)
+        
+        priority_queue<Node*,vector<Node*>,comp>p;
+        
+        for(int i=0;i<n;i++)
+        {
+            Node* temp=new Node(f[i],s[i],i);
+            p.push(temp);
+        }
+        
+        // pop from pq and make root node
+        while(p.size() > 1)
+        {
+            Node* first=p.top();
+            p.pop();
+            Node* second=p.top();
+            p.pop();
+            
+            Node* root= new Node(first->freq+second->freq,'$',min(first->id,second->id));
+            root->left=first;
+            root->right=second;
+            p.push(root);
+        }
+        Node* root=p.top(); // actual root node of tree
+        p.pop();
+        
+        // find preoder
+        vector<string>ans;
+        string temp;
+        find(root,temp,ans);
+        
+        return ans;
+    }
+};
