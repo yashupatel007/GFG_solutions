@@ -1,0 +1,42 @@
+
+    
+class Solution {
+  public:
+    static bool comp( pair<int,int>& a, pair<int,int>& b)
+    {
+        return a.first * b.second > b.first * a.second;
+    }
+    
+    double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
+        // code here
+        int n=val.size();
+        vector<pair<int,int>>valwt;
+        for(int i=0;i<n;i++)
+        {
+            
+            valwt.push_back({val[i],wt[i]});
+        }
+        
+        sort(valwt.begin(),valwt.end(),comp);
+        
+        int i=0;
+        double profit=0;
+        
+        while(capacity && i<n)
+        {
+            if(capacity>=valwt[i].second)
+            {
+                profit+=valwt[i].first;
+                capacity-=valwt[i].second;
+            }
+            else    // fraction aayega
+            {
+                double temp=(double)valwt[i].first / valwt[i].second;
+                profit+=temp * capacity;
+                capacity=0;
+            }
+            i++;
+        }
+        return profit;
+    }
+};
